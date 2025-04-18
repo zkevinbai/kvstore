@@ -68,3 +68,15 @@ You can test the API using Postman, curl, or simply your browser.
 ---
 
 **License**: MIT
+
+## features
+
+### persist store to local json file
+
+### add rate limiting, no more than 5 requests in a minute of any kind
+* read the ip coming in
+* track the ips in memory, list of timestamps of calls
+* clean up mechanism, older than a minute, not relevant
+* block over limit clients
+
+### add authentication (hardcoded)
