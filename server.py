@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Request, Depends, Header
 from pydantic import BaseModel
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
+import logging
 import uvicorn
 import json
 import os
@@ -15,6 +16,12 @@ RATE_LIMIT = 5
 WINDOW_SECONDS = 60
 API_KEY = 'apikey'
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[logging.StreamHandler()]
+)
+logger = logging.getLogger(__name__)
 class KeyValue(BaseModel):
     key: str
     value: str
@@ -42,7 +49,8 @@ def rate_limiter(request: Request):
     # now = datetime.now(datetime.UTC)
     now = datetime.utcnow()
 
-    # print(client_ip, now)
+    # Log each incoming request
+    logger.info(f"[RATE LIMIT] IP: {client_ip} at {now.isoformat()}")
 
     times_called = request_log.get(client_ip, [])
 
